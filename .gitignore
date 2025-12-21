@@ -1,0 +1,102 @@
+# Build artifacts
+build/
+dist/
+*.spec
+release/
+*.zip
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+*.pyc
+*.pyo
+*.pyd
+
+# Virtual Environment
+venv/
+env/
+ENV/
+env.bak/
+venv.bak/
+
+# Environment variables and secrets
+.env
+.env.*
+!.env.example
+config.encrypted
+.session
+*.key
+*.pem
+
+# Sessions (local broker sessions - contains sensitive data)
+sessions/
+sessions/*.json
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+*.sublime-project
+*.sublime-workspace
+
+# OS
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+Desktop.ini
+
+# Logs
+*.log
+logs/
+*.log.*
+
+# Temporary files and downloads
+temp_netchb_downloads/
+temp_pdfs/
+temp_*/
+*.tmp
+*.temp
+
+# Test files and test data
+test_*.py
+*_test.py
+setup_test.sh
+run_dev.py
+TESTING_GUIDE.md
+test_output/
+test_data/
+
+# Generated files
+*.pdf
+*.xlsx
+*.xls
+*.doc
+*.docx
+
+# Playwright
+.playwright/
+playwright-report/
+test-results/
+
+# Coverage reports
+.coverage
+htmlcov/
+.pytest_cache/
+.coverage.*
+*.cover
+
+# Debug files
+*.pdb
+*.dbg
+debug.log
+.cursor/debug.log
+

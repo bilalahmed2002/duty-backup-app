@@ -1,0 +1,98 @@
+name: Build Duty Backup App (Windows EXE)
+
+on:
+  push:
+    branches:
+      - main
+      - master
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version tag (optional)'
+        required: false
+        type: string
+
+jobs:
+  build:
+    runs-on: windows-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Checkout backend (if available as submodule or separate repo)
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ github.repository_owner }}/FTE-Operations-backend
+          path: ../FTE-Operations-backend
+          token: ${{ secrets.GITHUB_TOKEN }}
+        continue-on-error: true
+      
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+          architecture: 'x64'
+      
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements_standalone.txt
+      
+      - name: Install Playwright browsers
+        run: |
+          python -m playwright install chromium
+          python -m playwright install-deps chromium
+      
+      - name: Build executable
+        run: |
+          python build_standalone.py
+        env:
+          # Backend should be available via sys.path manipulation in build_standalone.py
+          # Or set PYTHONPATH if backend is checked out as submodule
+          PYTHONPATH: ${{ github.workspace }}
+      
+      - name: Verify executable exists
+        run: |
+          if (Test-Path "dist\duty_backup_app.exe") {
+            Write-Host "✓ Executable found"
+            Get-Item "dist\duty_backup_app.exe" | Select-Object Name, Length, LastWriteTime
+          } else {
+            Write-Host "✗ Executable not found!"
+            Get-ChildItem -Recurse -Filter "*.exe" | Select-Object FullName
+            exit 1
+          }
+      
+      - name: Create release package
+        run: |
+          $version = "${{ github.event.inputs.version }}"
+          if (-not $version) {
+            $version = "v${{ github.run_number }}"
+          }
+          $packageName = "duty-backup-app-$version-windows"
+          New-Item -ItemType Directory -Force -Path "release"
+          Copy-Item -Path "dist\*" -Destination "release\" -Recurse -Force
+          Compress-Archive -Path "release\*" -DestinationPath "$packageName.zip" -Force
+          Write-Host "Created package: $packageName.zip"
+      
+      - name: Upload executable artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: duty-backup-app-windows
+          path: |
+            dist/duty_backup_app.exe
+            dist/*.dll
+            dist/_internal/
+            *.zip
+          retention-days: 30
+      
+      - name: Create Release (if tag)
+        if: startsWith(github.ref, 'refs/tags/')
+        uses: softprops/action-gh-release@v1
+        with:
+          files: *.zip
+          draft: false
+          prerelease: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
