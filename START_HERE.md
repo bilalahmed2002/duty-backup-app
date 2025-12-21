@@ -49,7 +49,7 @@ git commit -m "Initial commit: Duty Backup App - Standalone GUI for NetCHB duty 
 
 ### 7. Push to GitHub
 ```bash
-# Replace YOUR_USERNAME with your GitHub username
+# Replace YOUR_USERNAME with your GitHub username ok 
 git remote add origin https://github.com/YOUR_USERNAME/duty-backup-app.git
 
 git branch -M main
