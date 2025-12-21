@@ -89,3 +89,4 @@ python build_standalone.py
 - The app will fall back to looking for `.env` file
 - Or create `config.encrypted` manually
 
+
