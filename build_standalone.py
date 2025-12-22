@@ -80,6 +80,19 @@ def main():
         env_example_str = str(env_example_path.resolve()).replace("\\", "/")
         datas_list.append(f"(r'{env_example_str}', '.')")
     
+    # Bundle entire utils directory (required for dynamic imports like styles.py and mawb_parser.py)
+    utils_dir = APP_DIR / "utils"
+    if utils_dir.exists():
+        utils_str = str(utils_dir.resolve()).replace("\\", "/")
+        # Bundle all Python files in utils directory
+        datas_list.append(f"(r'{utils_str}', 'utils')")
+    
+    # Bundle resources directory if it exists (fonts, icons, etc.)
+    resources_dir = APP_DIR / "resources"
+    if resources_dir.exists():
+        resources_str = str(resources_dir.resolve()).replace("\\", "/")
+        datas_list.append(f"(r'{resources_str}', 'resources')")
+    
     datas_str = "[" + ", ".join(datas_list) + "]" if datas_list else "[]"
     
     spec_content = f"""# -*- mode: python ; coding: utf-8 -*-
@@ -126,7 +139,14 @@ a = Analysis(
         'service.netchb_duty.otp_manager',
         'utils.s3_storage',
         'utils.playwright_launcher',
+        'utils.styles',
+        'utils.mawb_parser',
+        'utils.__init__',
         'cryptography',
+        # Additional PyQt6 modules that might be needed
+        'PyQt6.QtNetwork',
+        'PyQt6.QtWebEngineWidgets',
+        'PyQt6.QtWebEngineCore',
     ],
     hookspath=[],
     hooksconfig={{}},
