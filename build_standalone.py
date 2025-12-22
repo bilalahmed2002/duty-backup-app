@@ -16,7 +16,7 @@ def main():
     print("=" * 60)
     print("Building Duty Backup Application Executable")
     print("=" * 60)
-    print("✓ Standalone build - no external backend dependency needed")
+    print("[OK] Standalone build - no external backend dependency needed")
     
     # Clean previous builds
     print("\n1. Cleaning previous builds...")
@@ -29,9 +29,9 @@ def main():
     print("\n2. Installing Playwright browsers...")
     try:
         subprocess.run([sys.executable, "-m", "playwright", "install", "chromium"], check=True)
-        print("✓ Playwright browsers installed")
+        print("[OK] Playwright browsers installed")
     except subprocess.CalledProcessError as e:
-        print(f"⚠ Warning: Failed to install Playwright browsers: {e}")
+        print(f"[WARN] Failed to install Playwright browsers: {e}")
         print("  You may need to install them manually: playwright install chromium")
     
     # Encrypt .env if it exists (for employee distribution)
@@ -49,16 +49,16 @@ def main():
             
             encrypted_manager = EncryptedConfigManager()
             encrypted_path = encrypted_manager.encrypt_env_file(env_file, encrypted_config_path)
-            print(f"   ✓ Encrypted .env -> {encrypted_config_path}")
+            print(f"   [OK] Encrypted .env -> {encrypted_config_path}")
         except ImportError:
-            print("   ⚠ Warning: cryptography not installed, cannot encrypt .env")
+            print("   [WARN] cryptography not installed, cannot encrypt .env")
             print("     Install: pip install cryptography")
             print("     Or manually encrypt .env to config.encrypted before building")
         except Exception as e:
-            print(f"   ⚠ Warning: Failed to encrypt .env: {e}")
+            print(f"   [WARN] Failed to encrypt .env: {e}")
             print("     Continuing without encrypted config...")
     elif encrypted_config_path.exists():
-        print(f"   ✓ Found encrypted config: {encrypted_config_path}")
+        print(f"   [OK] Found encrypted config: {encrypted_config_path}")
     
     # Create PyInstaller spec
     print("\n4. Creating PyInstaller spec...")
@@ -167,7 +167,7 @@ exe = EXE(
     spec_file = APP_DIR / "duty_backup_app.spec"
     with open(spec_file, 'w') as f:
         f.write(spec_content)
-    print(f"✓ Spec file created: {spec_file}")
+    print(f"[OK] Spec file created: {spec_file}")
     
     # Run PyInstaller
     print("\n4. Running PyInstaller...")
@@ -186,21 +186,21 @@ exe = EXE(
             "--noconfirm",
             str(spec_file)
         ], check=True, cwd=str(APP_DIR), env=env)
-        print("✓ PyInstaller build completed")
+        print("[OK] PyInstaller build completed")
     except subprocess.CalledProcessError as e:
-        print(f"✗ PyInstaller build failed: {e}")
+        print(f"[ERROR] PyInstaller build failed: {e}")
         sys.exit(1)
     
     # Copy .env.example if it exists (NEVER copy .env - it contains secrets!)
     env_example = APP_DIR / ".env.example"
     if env_example.exists():
         shutil.copy(env_example, DIST_DIR / ".env.example")
-        print("✓ Copied .env.example (NOT .env - users must create their own)")
+        print("[OK] Copied .env.example (NOT .env - users must create their own)")
     
     # Ensure .env is NOT copied (safety check)
     env_file = APP_DIR / ".env"
     if env_file.exists():
-        print("⚠ Warning: .env file exists but will NOT be included in build (contains secrets)")
+        print("[WARN] .env file exists but will NOT be included in build (contains secrets)")
     
     # Create README in dist
     readme_content = """# Duty Backup Application
@@ -240,7 +240,7 @@ For issues, check the `duty_backup_app.log` file.
     readme_file = DIST_DIR / "README.txt"
     with open(readme_file, 'w') as f:
         f.write(readme_content)
-    print("✓ Created README.txt")
+    print("[OK] Created README.txt")
     
     print("\n" + "=" * 60)
     print("Build completed successfully!")
