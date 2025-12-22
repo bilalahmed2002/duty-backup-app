@@ -20,14 +20,6 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
       
-      - name: Checkout backend (if available as submodule or separate repo)
-        uses: actions/checkout@v4
-        with:
-          repository: ${{ github.repository_owner }}/FTE-Operations-backend
-          path: backend
-          token: ${{ secrets.GITHUB_TOKEN }}
-        continue-on-error: true
-      
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
@@ -48,8 +40,6 @@ jobs:
         run: |
           python build_standalone.py
         env:
-          # Backend should be available via sys.path manipulation in build_standalone.py
-          # Or set PYTHONPATH if backend is checked out as submodule
           PYTHONPATH: ${{ github.workspace }}
       
       - name: Verify executable exists

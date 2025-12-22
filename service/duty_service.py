@@ -13,22 +13,12 @@ from pathlib import Path
 from typing import Any, Dict, List, Optional
 from uuid import UUID
 
-# Add backend directory to path for imports
-# IMPORTANT: Backend must be FIRST in path when importing backend modules
-# because backend code uses 'from utils.s3_storage' which must find backend/utils
-backend_dir = Path(__file__).parent.parent.parent / "FTE-Operations-backend"
-backend_dir_str = str(backend_dir.resolve())
-
-# Temporarily move backend to front of path for imports
-if backend_dir_str in sys.path:
-    sys.path.remove(backend_dir_str)
-sys.path.insert(0, backend_dir_str)
-
-from services.netchb_duty.database_manager import NetChbDutyDatabaseManager
-from services.netchb_duty.models import DutyRunRequest, DutySections
-from services.netchb_duty.playwright_runner import NetChbDutyRunner
-from services.netchb_duty.storage import NetChbDutyStorageManager
-from services.netchb_duty.input_parser import parse_mawb_input
+# Import from local netchb_duty modules (standalone copy)
+from .netchb_duty.database_manager import NetChbDutyDatabaseManager
+from .netchb_duty.models import DutyRunRequest, DutySections
+from .netchb_duty.playwright_runner import NetChbDutyRunner
+from .netchb_duty.storage import NetChbDutyStorageManager
+from .netchb_duty.input_parser import parse_mawb_input
 
 from .local_session_storage import LocalSessionStorage
 

@@ -8,7 +8,6 @@ from pathlib import Path
 
 # Paths - all relative to duty-backup-app directory
 APP_DIR = Path(__file__).parent.resolve()
-BACKEND_DIR = APP_DIR.parent / "FTE-Operations-backend"
 DIST_DIR = APP_DIR / "dist"
 BUILD_DIR = APP_DIR / "build"
 
@@ -17,12 +16,7 @@ def main():
     print("=" * 60)
     print("Building Duty Backup Application Executable")
     print("=" * 60)
-    
-    # Check if backend directory exists (needed for imports)
-    if not BACKEND_DIR.exists():
-        print(f"Error: Backend directory not found: {BACKEND_DIR}")
-        print("  Make sure FTE-Operations-backend is in the parent directory")
-        sys.exit(1)
+    print("✓ Standalone build - no external backend dependency needed")
     
     # Clean previous builds
     print("\n1. Cleaning previous builds...")
@@ -71,7 +65,6 @@ def main():
     # Convert paths to use forward slashes for cross-platform compatibility
     main_py_path = str(APP_DIR / "main.py").replace("\\", "/")
     app_dir_path = str(APP_DIR).replace("\\", "/")
-    backend_dir_path = str(BACKEND_DIR).replace("\\", "/")
     
     # Bundle encrypted config or .env.example
     datas_list = []
@@ -102,7 +95,7 @@ block_cipher = None
 
 a = Analysis(
     [r'{main_py_path}'],
-    pathex=[r'{app_dir_path}', r'{backend_dir_path}'],
+    pathex=[r'{app_dir_path}'],
     binaries=[],
     datas={datas_str},
     hiddenimports=[
@@ -124,6 +117,16 @@ a = Analysis(
         'playwright._impl._page',
         'playwright._impl._path_utils',
         'playwright._impl._transport',
+        # Local netchb_duty modules (standalone copies)
+        'service.netchb_duty.database_manager',
+        'service.netchb_duty.models',
+        'service.netchb_duty.playwright_runner',
+        'service.netchb_duty.storage',
+        'service.netchb_duty.input_parser',
+        'service.netchb_duty.otp_manager',
+        'utils.s3_storage',
+        'utils.playwright_launcher',
+        'cryptography',
     ],
     hookspath=[],
     hooksconfig={{}},
@@ -169,10 +172,10 @@ exe = EXE(
     # Run PyInstaller
     print("\n4. Running PyInstaller...")
     try:
-        # Set PYTHONPATH to include both directories
+        # Set PYTHONPATH to include app directory
         env = os.environ.copy()
         current_pythonpath = env.get('PYTHONPATH', '')
-        pythonpath_parts = [str(APP_DIR), str(BACKEND_DIR)]
+        pythonpath_parts = [str(APP_DIR)]
         if current_pythonpath:
             pythonpath_parts.append(current_pythonpath)
         env['PYTHONPATH'] = os.pathsep.join(pythonpath_parts)
