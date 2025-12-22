@@ -12,7 +12,15 @@ from PyQt6.QtCore import Qt
 # Ensure app directory is in path for imports
 import sys
 from pathlib import Path
-_app_dir = Path(__file__).parent.resolve()
+
+# Get app directory (handles both dev and PyInstaller bundle)
+if getattr(sys, 'frozen', False):
+    # PyInstaller bundle
+    _app_dir = Path(sys.executable).parent.resolve()
+else:
+    # Development
+    _app_dir = Path(__file__).parent.resolve()
+
 if str(_app_dir) not in sys.path:
     sys.path.insert(0, str(_app_dir))
 

@@ -20,6 +20,17 @@ except ImportError:
 
 logger = logging.getLogger(__name__)
 
+# Import path utility
+try:
+    from utils.path_utils import get_app_directory
+except ImportError:
+    # Fallback if utils not available
+    def get_app_directory() -> Path:
+        if getattr(sys, 'frozen', False):
+            return Path(sys.executable).parent.resolve()
+        else:
+            return Path(__file__).parent.parent.resolve()
+
 
 class ConfigManager:
     """Manages application configuration and credentials."""
@@ -31,8 +42,8 @@ class ConfigManager:
             env_file: Path to .env file. Defaults to .env in app directory.
         """
         if env_file is None:
-            # Get the app directory (parent of service/)
-            app_dir = Path(__file__).parent.parent
+            # Get the app directory (works for both dev and PyInstaller bundle)
+            app_dir = get_app_directory()
             env_file = app_dir / ".env"
         
         self.env_file = Path(env_file)

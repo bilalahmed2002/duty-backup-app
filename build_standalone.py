@@ -141,6 +141,7 @@ a = Analysis(
         'utils.playwright_launcher',
         'utils.styles',
         'utils.mawb_parser',
+        'utils.path_utils',
         'utils.__init__',
         'cryptography',
         # Additional PyQt6 modules that might be needed

@@ -14,6 +14,18 @@ from uuid import UUID
 
 logger = logging.getLogger(__name__)
 
+# Import path utility
+try:
+    from utils.path_utils import get_app_directory
+except ImportError:
+    # Fallback if utils not available
+    import sys
+    def get_app_directory() -> Path:
+        if getattr(sys, 'frozen', False):
+            return Path(sys.executable).parent.resolve()
+        else:
+            return Path(__file__).parent.parent.resolve()
+
 
 class LocalSessionStorage:
     """Manages local storage of broker login sessions."""
@@ -25,8 +37,8 @@ class LocalSessionStorage:
             sessions_dir: Directory to store session files. Defaults to 'sessions/' in app directory.
         """
         if sessions_dir is None:
-            # Get the app directory (parent of service/)
-            app_dir = Path(__file__).parent.parent
+            # Get the app directory (works for both dev and PyInstaller bundle)
+            app_dir = get_app_directory()
             sessions_dir = app_dir / "sessions"
         
         self.sessions_dir = Path(sessions_dir)

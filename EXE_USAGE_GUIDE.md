@@ -38,12 +38,18 @@ If `config.encrypted` is included, the app will automatically decrypt it on firs
 
 ### Option B: Create .env File (Manual Setup)
 
-1. Copy `.env.example` to `.env`:
+**⚠️ CRITICAL: Place `.env` file in the SAME directory as `duty_backup_app.exe`**
+
+1. Navigate to the folder containing `duty_backup_app.exe`
+   - Example: `C:\Users\YourName\Desktop\duty-backup-app\`
+
+2. Copy `.env.example` to `.env`:
    ```bash
    copy .env.example .env
    ```
+   Or create a new file named `.env` in the same folder as the `.exe`
 
-2. Edit `.env` with your credentials:
+3. Edit `.env` with your credentials:
    ```env
    SUPABASE_URL=https://your-project.supabase.co
    SUPABASE_ANON_KEY=your_anon_key
@@ -55,7 +61,10 @@ If `config.encrypted` is included, the app will automatically decrypt it on firs
    AWS_REGION=us-east-1
    ```
 
-**⚠️ Important**: Never share `.env` file - it contains secrets!
+**⚠️ Important**: 
+- Place `.env` in the **same folder** as `duty_backup_app.exe`
+- Never share `.env` file - it contains secrets!
+- The app looks for `.env` next to the executable, NOT in temp folders
 
 ---
 
