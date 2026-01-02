@@ -60,3 +60,7 @@ After the fix:
 
 **Fixed! The app now correctly looks for `.env` next to the executable.** ✅
 
+
+
+
+

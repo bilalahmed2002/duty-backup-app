@@ -66,9 +66,9 @@ git push -u origin main
 
 ## 📚 Need More Details?
 
-- **`GIT_SETUP.md`** - Detailed git setup instructions
-- **`DEPLOYMENT_STEPS.md`** - Full deployment guide
-- **`QUICK_START_GIT.md`** - Quick reference
+- **`docs/guides/GIT_SETUP.md`** - Detailed git setup instructions
+- **`docs/guides/DEPLOYMENT_STEPS.md`** - Full deployment guide
+- **`docs/guides/QUICK_START_GIT.md`** - Quick reference
 
 ---
 
@@ -88,6 +88,10 @@ After pushing, verify on GitHub:
 - [ ] `sessions/` folder is NOT there
 - [ ] `.github/workflows/build-windows-exe.yml` exists
 - [ ] Actions tab shows the workflow
+
+
+
+
 
 
 

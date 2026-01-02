@@ -23,7 +23,7 @@ A standalone Windows GUI application for processing NetCHB duty requests, functi
 
 ### For Developers
 
-See `GIT_SETUP.md` for setting up the repository and `DEPLOYMENT_STEPS.md` for building the executable.
+See `docs/guides/GIT_SETUP.md` for setting up the repository and `docs/guides/DEPLOYMENT_STEPS.md` for building the executable.
 
 ## Repository Structure
 
@@ -34,6 +34,12 @@ duty-backup-app/
 ├── gui/                      # PyQt6 GUI components
 ├── service/                  # Business logic (duty processing)
 ├── utils/                    # Utilities (parsing, styles)
+├── docs/                     # Documentation
+│   ├── guides/              # Setup and usage guides
+│   ├── faq/                 # Frequently asked questions
+│   └── changelog/           # Change logs
+├── tests/                    # Test files
+│   └── unit/                # Unit tests
 ├── main.py                   # Application entry point
 ├── build_standalone.py       # PyInstaller build script
 └── requirements_standalone.txt
@@ -79,7 +85,7 @@ See `.env.example` for template.
 - `.env` files are **never** committed (in `.gitignore`)
 - Encrypted config (`config.encrypted`) can be bundled for employee distribution
 - Broker sessions stored locally in `sessions/` (not committed)
-- See `ENCRYPTION_GUIDE.md` for encryption details
+- See `docs/guides/ENCRYPTION_GUIDE.md` for encryption details
 
 ## Building
 
@@ -93,15 +99,31 @@ python build_standalone.py
 
 ## Documentation
 
-- `GIT_SETUP.md` - Setting up this repository
-- `DEPLOYMENT_STEPS.md` - Step-by-step deployment guide
-- `ENCRYPTION_GUIDE.md` - Encrypted configuration guide
-- `SESSION_AND_CONFIG_FAQ.md` - FAQ about sessions and config
-- `QUICK_START_GIT.md` - Quick git setup reference
+### Guides
+- `docs/guides/GIT_SETUP.md` - Setting up this repository
+- `docs/guides/DEPLOYMENT_STEPS.md` - Step-by-step deployment guide
+- `docs/guides/ENCRYPTION_GUIDE.md` - Encrypted configuration guide
+- `docs/guides/QUICK_START.md` - Quick start guide
+- `docs/guides/QUICK_START_GIT.md` - Quick git setup reference
+- `docs/guides/TESTING_GUIDE.md` - Testing guide
+- `docs/guides/EXE_USAGE_GUIDE.md` - Executable usage guide
+- `docs/guides/PRE_BUILD_CHECKLIST.md` - Pre-build checklist
+
+### FAQ
+- `docs/faq/SESSION_AND_CONFIG_FAQ.md` - FAQ about sessions and config
+
+### Changelog
+- `docs/changelog/ALL_FIXES_SUMMARY.md` - Summary of all fixes
+- `docs/changelog/BUILD_FIX.md` - Build fixes
+- `docs/changelog/BUILD_VERIFICATION.md` - Build verification
 
 ## License
 
 [Your License Here]
+
+
+
+
 
 
 
